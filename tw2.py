@@ -7,6 +7,9 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.probability import FreqDist
 from textblob import TextBlob
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+
+sid = SentimentIntensityAnalyzer()
 tags = []
 tkns_CE=''
 tkns_BC=''
@@ -27,8 +30,9 @@ with open('d:/Prabhkirat/Python/tweets.txt','r', encoding='UTF8') as file:
 			#print(result.tags)
 			for word, pos in result.tags:
 				if pos == 'JJ':
+					if (sid.polarity_scores(word)['compound']) >= 0.5:
 					#print(word)
-					tkns_CE += ' ' + word
+						tkns_CE += ' ' + word
 					
 		pat2 = re.compile('bradleycooper')
 		if pat2.search(line.lower()) != None:
@@ -37,7 +41,8 @@ with open('d:/Prabhkirat/Python/tweets.txt','r', encoding='UTF8') as file:
 			result2 = TextBlob(seg2)
 			for word, pos in result2.tags:
 				if pos == 'JJ':
-					tkns_BC += ' ' + word
+					if (sid.polarity_scores(word)['compound']) >= 0.5:
+						tkns_BC += ' ' + word
 					
 		pat3 = re.compile('chriskyle')
 		if pat3.search(line.lower()) != None:
@@ -46,7 +51,8 @@ with open('d:/Prabhkirat/Python/tweets.txt','r', encoding='UTF8') as file:
 			result3 = TextBlob(seg3)
 			for word, pos in result3.tags:
 				if pos == 'JJ':
-					tkns_CK += ' ' + word
+					if (sid.polarity_scores(word)['compound']) >= 0.5:
+						tkns_CK += ' ' + word
 				
 				
 tkns_CE = tkns_CE.split()
