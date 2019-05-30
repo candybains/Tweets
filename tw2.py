@@ -34,16 +34,25 @@ def get_trends(tag):
 
 	tkns_CE = tkns_CE.split()
 	#print(tkns)
-	for i in range(len(tkns_CE)):						
-		for syns in wordnet.synsets(tkns_CE[i], pos = 'a'):
+	for i in range(len(tkns_CE)):
+	#print(tkns_CE[i]_
+		for syns in wordnet.synsets(tkns_CE[i]):
 			if syns:
 				lemmas = syns.lemmas()
-				#print(lemmas)
 				for l in lemmas:
+				#syns = wordnet.synsets(tkns_CE1[i], pos = 'a')
+				#print(tkns_CE1[i])
+					#if syns:
 					for j in range(i,len(tkns_CE)):
-						if l.name().lower() == tkns_CE[j]:
-							#print(tkns_CE[j],tkns_CE[i])
-							tkns_CE[j] = tkns_CE[i]
+						#print(tkns_CE1[j])
+						syns1 = wordnet.synsets(tkns_CE[j])
+						syns2 = wordnet.synsets(l.name())
+						if syns1:
+							sim = syns2[0].wup_similarity(syns1[0])
+							if sim:
+								if sim > 0.4:
+									#print(tkns_CE[j],tkns_CE[i])
+									tkns_CE[j] = tkns_CE[i]
 	fdist = FreqDist(tkns_CE)
 	#print(fdist)
 	print(fdist.most_common(10))
